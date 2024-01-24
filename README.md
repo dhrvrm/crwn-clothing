@@ -8,6 +8,7 @@ This project began as a basic e-commerce site built with fundamental React compo
 - **State management evolution**: Witness the project's journey through
     - Context API
     - Redux with basic reducers
+    - Redux Persist
     - Redux with Thunk for asynchronous actions
     - Redux-Saga for managing complex side effects
 - **Performance optimizations**: Discover improvements implemented at each commit stage.
