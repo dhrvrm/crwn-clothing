@@ -1,5 +1,7 @@
 # Welcome to crwn-clothing, my learning project for learning React development!
 
+[LIVE](https://astounding-pothos-665102.netlify.app/)
+
 This project began as a basic e-commerce site built with fundamental React components. During its development, I progressively explored and implemented various state management techniques to enhance its functionality and performance.
 
 ## Features:
