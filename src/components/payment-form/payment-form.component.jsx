@@ -1,13 +1,19 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
-import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
+import  { BUTTON_TYPE_CLASSES } from "../button/button.component";
 
-import React from "react";
-import { FormContainer, PaymentFormContainer } from "./payment-form.styles";
+import { useState } from "react";
+import { FormContainer, PaymentButton, PaymentFormContainer } from "./payment-form.styles";
+import { useSelector } from "react-redux";
+import { selectCartTotal } from "../../store/cart/cart.selector";
+import { selectCurrentUser } from "../../store/user/user.selector";
 
 const PaymentForm = () => {
   const stripe = useStripe();
   const elements = useElements();
+  const amount = useSelector(selectCartTotal);
+  const currentUser = useSelector(selectCurrentUser);
+  const [isProccessingPayment, setIsProccessingPayment] = useState(false);
 
   const paymentHandler = async (e) => {
     e.preventDefault();
@@ -15,6 +21,7 @@ const PaymentForm = () => {
     if (!stripe || !elements) return;
 
     try {
+      setIsProccessingPayment(true);
       const response = await fetch(
         "/.netlify/functions/create-payment-intent",
         {
@@ -22,7 +29,7 @@ const PaymentForm = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ amount: 10000 }),
+          body: JSON.stringify({ amount: amount * 100 }),
         }
       );
 
@@ -38,7 +45,7 @@ const PaymentForm = () => {
         payment_method: {
           card: elements.getElement(CardElement),
           billing_details: {
-            name: "John Smith",
+            name: currentUser ? currentUser.displayName : "Guest",
           },
         },
       });
@@ -51,6 +58,8 @@ const PaymentForm = () => {
     } catch (error) {
       console.error("Error creating payment intent:", error);
       // Handle error display or other actions here
+    } finally {
+      setIsProccessingPayment(false);
     }
   };
 
@@ -59,7 +68,12 @@ const PaymentForm = () => {
       <FormContainer onSubmit={paymentHandler}>
         <h2>Credit Card Payment: </h2>
         <CardElement />
-        <Button buttonType={BUTTON_TYPE_CLASSES.inverted}>Pay Now</Button>
+        <PaymentButton
+          isLoading={isProccessingPayment}
+          buttonType={BUTTON_TYPE_CLASSES.inverted}
+        >
+          Pay Now
+        </PaymentButton>
       </FormContainer>
     </PaymentFormContainer>
   );
