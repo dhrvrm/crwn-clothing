@@ -37,6 +37,7 @@ const PaymentForm = () => {
         throw new Error("Failed to create payment intent");
       }
 
+      console.log(response.json());
       const {
         paymentIntent: { clientSecret },
       } = await response.json();
