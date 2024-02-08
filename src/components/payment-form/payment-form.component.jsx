@@ -37,11 +37,10 @@ const PaymentForm = () => {
         throw new Error("Failed to create payment intent");
       }
 
-      console.log(response.json());
+      // console.log(response.json());
       const {
         paymentIntent: { clientSecret },
       } = await response.json();
-
       const paymentResult = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: elements.getElement(CardElement),
