@@ -1,3 +1,4 @@
+import { AnyAction } from "redux";
 import { CategoryAction } from "./category.action";
 import { CATEGORY_ACTION_TYPES, Category } from "./category.types";
 
@@ -15,7 +16,7 @@ const CATEGORY_INITIAL_STATE: CategoriesState = {
 
 export const categoryReducer = (
   state = CATEGORY_INITIAL_STATE,
-  action = {} as CategoryAction
+  action = {} as AnyAction
 ): CategoriesState => {
   switch (action.type) {
     case CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_START:
